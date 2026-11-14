@@ -38,7 +38,7 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 - Las libs se importan por los alias de `paths` en `tsconfig.base.json` (`@alexdevcave/nest-tools`, `@nestjs-template/types`). Una lib nueva necesita su alias ahí.
 - `pnpm-workspace.yaml` no declara `packages:`, así que `apps/*` y `packages/*` no son paquetes del workspace de pnpm; las libs solo se resuelven por ese alias.
 - Los DTOs son interfaces: no existen en tiempo de ejecución y **no hay validación** del body (no hay `class-validator` ni `ValidationPipe`).
-- Límites de módulos (`eslint.config.mjs`): `scope:api` puede depender de `scope:shared`/`scope:api`, y `scope:shared` solo de `scope:shared`. `nest-tools-app` y `nest-tools` aún no tienen `tags`, así que esas reglas no los limitan.
+- Límites de módulos (`eslint.config.mjs`): `scope:api` puede depender de `scope:shared`/`scope:api`, y `scope:shared` solo de `scope:shared`. `nest-tools-app` es `scope:api`; `nest-tools` y `types` son `scope:shared`. Etiqueta (`tags`) cada proyecto nuevo: los generadores lo dejan vacío.
 - `tsconfig.base.json` tiene `strict: false`; `packages/types` usa `strict: true`.
 - `nx configure-ai-agents` puede volver a crear `AGENTS.md` o insertar su bloque en este archivo.
 

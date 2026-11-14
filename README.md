@@ -82,11 +82,11 @@ nestjs-template/
 
 ### Module Boundary Tags
 
-| Project        | Tags                   | May depend on |
-| -------------- | ---------------------- | ------------- |
-| nest-tools-app | (none)                 | anything      |
-| nest-tools     | (none)                 | anything      |
-| types          | scope:shared, type:lib | scope:shared  |
+| Project        | Tags                   | May depend on           |
+| -------------- | ---------------------- | ----------------------- |
+| nest-tools-app | scope:api, type:app    | scope:api, scope:shared |
+| nest-tools     | scope:shared, type:lib | scope:shared            |
+| types          | scope:shared, type:lib | scope:shared            |
 
 `@nx/enforce-module-boundaries` is configured in `eslint.config.mjs` so violations are caught at lint time, not at runtime.
 

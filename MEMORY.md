@@ -26,5 +26,4 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 
 ## Próximos pasos
 
-- Poner `tags` a `nest-tools-app` y `nest-tools` para que apliquen los límites de módulos.
 - Decidir si se borra `packages/types`.
