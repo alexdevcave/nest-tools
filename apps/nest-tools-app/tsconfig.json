@@ -4,11 +4,13 @@
   "include": [],
   "references": [
     {
+      "path": "./tsconfig.app.json"
+    },
+    {
       "path": "./tsconfig.spec.json"
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true,
-    "ignoreDeprecations": "6.0"
+    "esModuleInterop": true
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "nest-tools",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nest-tools/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nest-tools",
+        "tsConfig": "libs/nest-tools/tsconfig.lib.json",
+        "packageJson": "libs/nest-tools/package.json",
+        "main": "libs/nest-tools/src/index.ts",
+        "assets": ["libs/nest-tools/*.md"]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}

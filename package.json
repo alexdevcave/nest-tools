@@ -23,6 +23,7 @@
     "@nx/nest": "24.0.0",
     "@nx/node": "24.0.0",
     "@nx/web": "24.0.0",
+    "@nx/webpack": "24.0.0",
     "@nx/workspace": "24.0.0",
     "@swc/helpers": "~0.5.18",
     "@types/jest": "~30.0.0",
@@ -37,11 +38,12 @@
     "prettier": "~3.6.2",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
-    "tsdown": "^0.22.3",
     "tslib": "^2.3.0",
     "typescript": "6.0.3",
     "typescript-eslint": "^8.40.0",
-    "unrun": "^0.3.1"
+    "webpack": "~5.110.0",
+    "webpack-cli": "^7.0.0",
+    "webpack-dev-server": "^5.2.1"
   },
   "packageManager": "pnpm@12.18.0"
 }

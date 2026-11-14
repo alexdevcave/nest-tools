@@ -1,0 +1,16 @@
+{
+  "name": "nest-tools-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["nest-tools-app"],
+  "targets": {
+    "e2e": {
+      "command": "jest --passWithNoTests",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "dependsOn": ["nest-tools-app:build", "nest-tools-app:serve"],
+      "options": {
+        "cwd": "apps/nest-tools-app-e2e"
+      }
+    }
+  }
+}
