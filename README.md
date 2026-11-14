@@ -22,7 +22,7 @@ cd my-workspace
 ### Dev server (hot reload)
 
 ```sh
-npx nx run api:serve
+pnpm nx run api:serve
 ```
 
 The API starts at `http://localhost:3000/api`.
@@ -40,7 +40,7 @@ Endpoints available out of the box:
 ### Build for production
 
 ```sh
-npx nx run api:build
+pnpm nx run api:build
 ```
 
 This runs tsdown (the oxc toolchain) via Nx and emits `dist/apps/api/main.cjs`. Run it directly with `node dist/apps/api/main.cjs`.
@@ -48,25 +48,25 @@ This runs tsdown (the oxc toolchain) via Nx and emits `dist/apps/api/main.cjs`. 
 ### Run all builds
 
 ```sh
-npx nx run-many -t build
+pnpm nx run-many -t build
 ```
 
 ### Run tests
 
 ```sh
-npx nx run-many -t test
+pnpm nx run-many -t test
 ```
 
 ### Lint
 
 ```sh
-npx nx run-many -t lint
+pnpm nx run-many -t lint
 ```
 
 ### Visualize the project graph
 
 ```sh
-npx nx graph
+pnpm nx graph
 ```
 
 ---
@@ -107,7 +107,7 @@ nestjs-template/
 Every build, test, and lint result is cached locally (and remotely via Nx Cloud). Re-running unchanged tasks is instant.
 
 ```sh
-npx nx run api:build   # second run: < 100 ms from cache
+pnpm nx run api:build   # second run: < 100 ms from cache
 ```
 
 ### Affected Commands
@@ -115,7 +115,7 @@ npx nx run api:build   # second run: < 100 ms from cache
 Only run what actually changed since your last commit or PR base:
 
 ```sh
-npx nx affected -t build,test,lint
+pnpm nx affected -t build,test,lint
 ```
 
 ### Code Generation
@@ -124,13 +124,13 @@ Scaffold new resources without boilerplate:
 
 ```sh
 # New NestJS app
-npx nx g @nx/nest:app my-service
+pnpm nx g @nx/nest:app my-service
 
 # New shared library
-npx nx g @nx/js:lib packages/my-lib --bundler=tsc
+pnpm nx g @nx/js:lib packages/my-lib --bundler=tsc
 
 # NestJS resource (CRUD module, controller, service, DTOs)
-npx nx g @nx/nest:resource --project=api --name=users
+pnpm nx g @nx/nest:resource --project=api --name=users
 ```
 
 ### Module Boundaries
@@ -168,7 +168,7 @@ Docs -> https://nx.dev/nx-cloud
 
 `TodosService` uses a plain array. Drop in any persistence layer:
 
-- **TypeORM** - `npx nx add @nx/typeorm` (or install manually + `TypeOrmModule.forRoot(...)`)
+- **TypeORM** - `pnpm nx add @nx/typeorm` (or install manually + `TypeOrmModule.forRoot(...)`)
 - **Prisma** - add `prisma` + `@prisma/client`, generate, inject `PrismaService`
 - **MikroORM**, **Mongoose**, **Drizzle** - follow the same pattern
 
