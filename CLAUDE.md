@@ -1,49 +1,45 @@
 # CLAUDE.md — Nest Tools Workspace
 
-API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para construir servicios con tipos compartidos, límites entre módulos y despliegue en Docker.
+API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para construir servicios con tipos compartidos, librerías compartidas y límites entre módulos.
 
 ## Stack y estructura
 
 - Nx 24, pnpm 12, NestJS 11, TypeScript 6.0, Jest 30, ESLint 9 (flat config), Prettier 3.
-- `apps/api`: la app NestJS. La compila **tsdown** (rolldown + oxc) mediante `nx:run-commands`, no webpack ni `@nx/js:tsc`. La salida es `dist/apps/api/main.cjs` (CommonJS, node22). Todas las rutas cuelgan del prefijo global `/api`, en el puerto `PORT` (por defecto 3000).
-- `apps/api/tsdown.config.mts`: la configuración del build. Lee `apps/api/tsconfig.app.json` para respetar `experimentalDecorators` y `emitDecoratorMetadata`.
-- `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos entre proyectos, compilados con `@nx/js:tsc`.
-- `apps/api-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `api:build` y `api:serve`, y `global-setup` espera a que el puerto esté abierto.
-- `apps/api/Dockerfile`: build multi-etapa que usa `nx run api:prune` (build + lockfile podado + módulos del workspace).
+- `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Todas las rutas cuelgan del prefijo global `/api`, en el puerto `PORT` (por defecto 3000).
+- `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
+- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS (`NestToolsModule`), compilada con `@nx/js:tsc`.
+- `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
 
 ## Comandos
 
 ```bash
-pnpm nx run api:serve                                    # dev: tsdown --watch + node --watch
-pnpm nx run api:build
-pnpm nx run api:test                                     # Jest (vía plugin @nx/jest)
-pnpm nx run api:test --testFile=app.service.spec.ts      # un solo spec
-pnpm nx run api-e2e:e2e                                  # levanta la API y lanza los e2e
+pnpm nx run nest-tools-app:serve                                    # dev con webpack en modo watch
+pnpm nx run nest-tools-app:build
+pnpm nx run nest-tools-app:test                                     # Jest (vía plugin @nx/jest)
+pnpm nx run nest-tools-app:test --testFile=app.service.spec.ts      # un solo spec
+pnpm nx run nest-tools-app-e2e:e2e                                  # levanta la app y lanza los e2e
 pnpm nx run-many -t lint test build
 pnpm nx affected -t build,test,lint
-pnpm nx g @nx/nest:resource --project=api --name=users   # scaffold CRUD
-docker build -f apps/api/Dockerfile -t nestjs-api .
+pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold CRUD
 ```
 
 ## Convenciones
 
 - Prettier: comillas simples, `printWidth: 200`; indentación de 2 espacios (`.editorconfig`).
 - Los tipos compartidos son `interface` en `packages/types/src/lib/types.ts` y se importan con `import type` desde `@nestjs-template/types`.
-- Patrón de referencia para un recurso: `apps/api/src/app/todos.controller.ts` + `todos.service.ts` (servicio `@Injectable()` inyectado por constructor, `ParseIntPipe` en los `:id`, `NotFoundException` cuando no existe, `@HttpCode(204)` en `DELETE`). Registra controladores y servicios en `app.module.ts`.
+- Patrón de referencia: `apps/nest-tools-app/src/app/app.controller.ts` + `app.service.ts` (el controlador delega en un servicio `@Injectable()` inyectado por constructor). Registra controladores y servicios en `app.module.ts`.
 - Tests unitarios junto al archivo (`*.spec.ts`) con `Test.createTestingModule` de `@nestjs/testing`.
 - El código y sus comentarios están en inglés; las respuestas al usuario, en español.
 
 ## Reglas de dominio / trampas conocidas
 
-- `main.ts` debe importar `reflect-metadata` lo primero, y `tsconfig.app.json` debe mantener `experimentalDecorators` + `emitDecoratorMetadata`. Si falta cualquiera, la DI y el enrutado de Nest se rompen sin error de compilación.
-- `@nestjs-template/types` se resuelve mediante **dos** alias: `paths` en `tsconfig.base.json` y `alias` en `apps/api/tsdown.config.mts`. Una nueva lib compartida necesita ambos.
-- `pnpm-workspace.yaml` no declara `packages:`, así que `apps/*` y `packages/*` no son paquetes del workspace de pnpm; las libs solo se resuelven por esos alias.
+- `tsconfig.base.json` debe mantener `experimentalDecorators` + `emitDecoratorMetadata`: sin ellos, la DI y el enrutado de Nest se rompen sin error de compilación.
+- Las libs se importan por los alias de `paths` en `tsconfig.base.json` (`@alexdevcave/nest-tools`, `@nestjs-template/types`). Una lib nueva necesita su alias ahí.
+- `pnpm-workspace.yaml` no declara `packages:`, así que `apps/*` y `packages/*` no son paquetes del workspace de pnpm; las libs solo se resuelven por ese alias.
 - Los DTOs son interfaces: no existen en tiempo de ejecución y **no hay validación** del body (no hay `class-validator` ni `ValidationPipe`).
-- `TodosService` guarda los datos en un array en memoria: se pierden al reiniciar.
-- Límites de módulos (`eslint.config.mjs`): `scope:api` puede depender de `scope:shared`/`scope:api`, y `scope:shared` solo de `scope:shared`. Etiqueta (`tags`) cada proyecto nuevo o el lint fallará.
+- Límites de módulos (`eslint.config.mjs`): `scope:api` puede depender de `scope:shared`/`scope:api`, y `scope:shared` solo de `scope:shared`. `nest-tools-app` y `nest-tools` aún no tienen `tags`, así que esas reglas no los limitan.
 - `tsconfig.base.json` tiene `strict: false`; `packages/types` usa `strict: true`.
-- En el `Dockerfile`, la instalación final usa `pnpm install --prod --fix-lockfile` porque el `pnpm-lock.yaml` que genera `@nx/js:prune-lockfile` deja mal la dependencia local `@nestjs-template/types` (con `--frozen-lockfile` falla).
 - `nx configure-ai-agents` puede volver a crear `AGENTS.md` o insertar su bloque en este archivo.
 
 ## Forma de trabajar
@@ -56,14 +52,13 @@ docker build -f apps/api/Dockerfile -t nestjs-api .
 ## Límites
 
 - ✅ Siempre: leer archivos, buscar en el código, ejecutar `lint`, `test`, `build` y `typecheck` a través de `pnpm nx`; actualizar `MEMORY.md` al terminar cada tarea.
-- ⚠ Pregunta antes: editar, crear, mover o borrar archivos; añadir dependencias o ejecutar `pnpm install`; tocar `nx.json`, `tsconfig*`, `package.json`, `pnpm-workspace.yaml`, `Dockerfile` o `eslint.config.mjs`; cambiar los tipos de `packages/types`; ejecutar generadores de Nx o cualquier comando de git.
+- ⚠ Pregunta antes: editar, crear, mover o borrar archivos; añadir dependencias o ejecutar `pnpm install`; tocar `nx.json`, `tsconfig*`, `package.json`, `pnpm-workspace.yaml`, `eslint.config.mjs`; cambiar los tipos de `packages/types`; ejecutar generadores de Nx o cualquier comando de git.
 - 🚫 Nunca: hacer commit, push o `nx release` sin que se pida; editar `pnpm-lock.yaml` a mano; desactivar reglas de ESLint o relajar el `tsconfig` para que algo pase; tocar `dist/`, `.nx/` o `node_modules/`.
 
 ## Verificación
 
 - `pnpm nx run-many -t lint test build` en verde.
-- Si cambia un endpoint: `pnpm nx run api-e2e:e2e`, o `pnpm nx run api:serve` y `curl localhost:3000/api/<ruta>`.
-- Si cambia el build, las dependencias o el `Dockerfile`: `docker build -f apps/api/Dockerfile -t nestjs-api .`, arrancar la imagen y comprobar `GET /api/health`.
+- Si cambia un endpoint: `pnpm nx run nest-tools-app-e2e:e2e`, o `pnpm nx run nest-tools-app:serve` y `curl localhost:3000/api/<ruta>`.
 
 ## Memoria
 - Al empezar, lee `MEMORY.md` para conocer el estado del proyecto y las decisiones tomadas.
@@ -73,7 +68,7 @@ docker build -f apps/api/Dockerfile -t nestjs-api .
 - No guardes nunca datos sensibles (claves, tokens, datos personales).
 
 ## Comandos
-- Tests: `pnpm nx run api:test`
+- Tests: `pnpm nx run nest-tools-app:test`
 
 ## Reglas
 - Lee `docs/constitution.md` y la spec activa (`specs/NNN-*/`) antes de tocar código.

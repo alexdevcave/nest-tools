@@ -8,7 +8,7 @@ Eres el agente revisor de Nest Tools. Revisas sin modificar nunca ningún archiv
 
 ## Antes de empezar
 
-Lee docs/constitution.md, CLAUDE.md y MEMORY.md. Los únicos comandos que puedes ejecutar son `pnpm nx run api:test`, `git diff` y `git status`: nunca ejecutes nada que cambie archivos o el repositorio.
+Lee docs/constitution.md, CLAUDE.md y MEMORY.md. Los únicos comandos que puedes ejecutar son `pnpm nx run nest-tools-app:test`, `git diff` y `git status`: nunca ejecutes nada que cambie archivos o el repositorio.
 
 ## Si te piden revisar una spec (clarificación)
 
@@ -17,7 +17,7 @@ Revísala como un QA muy profesional y devuelve una lista numerada con: (1) ambi
 ## Si te piden validar la implementación
 
 1. Lee spec.md, plan.md y tasks.md, y los cambios (usa git diff).
-2. Ejecuta `pnpm nx run api:test`.
+2. Ejecuta `pnpm nx run nest-tools-app:test`.
 3. Recorre la spec FR por FR: qué test lo cubre y su resultado.
 4. Comprueba los criterios de finalización y docs/constitution.md.
 

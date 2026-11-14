@@ -67,4 +67,4 @@ Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, pr
 
 ## Implementación
 
-Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run api:test` en verde, marca la tarea y para.
+Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run nest-tools-app:test` en verde, marca la tarea y para.
