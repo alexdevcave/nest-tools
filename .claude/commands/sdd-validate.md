@@ -1,10 +1,10 @@
 ---
-description: SDD · Valida la spec FR por FR (tests + Chrome DevTools)
+description: SDD · Valida la spec FR por FR (tests, build y e2e)
 agent: accept edits
 ---
 
-Recorre specs/$0/spec.md requisito a requisito. Para cada FR indica qué test lo cubre y el resultado de ejecutarlo con pnpm nx run nest-tools-app:test.
+Recorre specs/$0/spec.md requisito a requisito. Para cada FR indica qué test lo cubre y el resultado de ejecutarlo con pnpm nx run-many -t test -p nest-tools,nest-tools-app.
 
-Los FR que los tests no pueden verificar (lo que se ve en un navegador, o lo que solo muestra una build) verifícalos con el MCP de Chrome DevTools en la aplicación demo (incluida la vista móvil de 375 px) o haciendo la build.
+Los FR que los tests unitarios no pueden verificar compruébalos con `pnpm nx run nest-tools-app-e2e:e2e` (la herramienta usada en `nest-tools-app`) o con `pnpm nx run nest-tools:build` (lo que solo muestra el paquete compilado, como los tipos exportados o el `package.json`).
 
 Si algún FR no está cubierto o falla, dilo con claridad. NO arregles nada todavía. Después revisa los criterios de finalización y dame un veredicto: ¿se cumple la spec?

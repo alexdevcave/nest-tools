@@ -13,7 +13,7 @@ Constitución → Spec → Clarificación → Plan → Tareas → Implementació
 - La spec manda: si algo no está en la spec, no se implementa. Si falta una decisión, para y pregunta.
 - Un cambio de requisitos se hace primero en la spec, después en el plan y las tareas, y por último en el código.
 - Cada spec vive en su propia carpeta: `specs/NNN-nombre/` con `spec.md`, `plan.md` y `tasks.md`.
-- Si el componente ya existe en `libs/nest-tools/src/lib/components/`, la spec recoge cómo se comporta hoy. Los huecos van en "Preguntas abiertas" como cambios sugeridos. Cuando la spec esté aprobada, pregunta al usuario qué preguntas abiertas resolver (cada una se convierte en un cambio de FR) y si quiere cubrir los FR sin tests; con esa respuesta el flujo sigue por Plan, Tareas, Implementación y Validación. Si el usuario no elige ninguna, el flujo para tras la Clarificación.
+- Si la herramienta ya existe en `libs/nest-tools/src/lib/`, la spec recoge cómo se comporta hoy. Los huecos van en "Preguntas abiertas" como cambios sugeridos. Cuando la spec esté aprobada, pregunta al usuario qué preguntas abiertas resolver (cada una se convierte en un cambio de FR) y si quiere cubrir los FR sin tests; con esa respuesta el flujo sigue por Plan, Tareas, Implementación y Validación. Si el usuario no elige ninguna, el flujo para tras la Clarificación.
 - Al terminar cada fase, actualiza `MEMORY.md`.
 
 ## Idioma
@@ -36,7 +36,7 @@ Status: draft | approved | implemented
 ## Fuera de alcance
 ## Criterios de finalización
 ## Preguntas abiertas
-- [NECESITA ACLARACIÓN] <pregunta>
+- [NEEDS CLARIFICATION] <pregunta>
 ```
 
 La spec describe el QUÉ y el PORQUÉ. Sin stack, arquitectura ni nombres de archivos.
@@ -54,7 +54,7 @@ Cada FR debe ser verificable: nada de "rápido", "intenso" o "bonito" sin un cri
 
 ## Plan (plan.md)
 
-Archivos y responsabilidades · API pública (inputs, outputs, tipos exportados) · Estado y lo que se deriva de él · Dónde viven los efectos secundarios del navegador · Plantilla y accesibilidad · Decisiones justificadas con su alternativa descartada · Estrategia de tests con Vitest y TestBed, y lo que queda para validar en un navegador. Indica qué FR cubre cada parte.
+Archivos y responsabilidades · API pública (lo que se exporta desde `libs/nest-tools/src/index.ts`: clases, decoradores, opciones y tipos) · Configuración y valores por defecto (`forRoot`/`forRootAsync` si aplica) · Integración con Nest (módulo, providers, uso global o por ruta) · Compatibilidad (`peerDependencies`, Express y Fastify, impacto semver) · Documentación pública (README en inglés y JSDoc) · Decisiones justificadas con su alternativa descartada · Estrategia de tests con Jest y `@nestjs/testing`: unitarios de la lógica sin Nest, de integración con un módulo de prueba, y lo que se valida con e2e en `nest-tools-app`. Indica qué FR cubre cada parte.
 
 ## Tareas (tasks.md)
 
@@ -67,4 +67,4 @@ Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, pr
 
 ## Implementación
 
-Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run nest-tools-app:test` en verde, marca la tarea y para.
+Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run-many -t test -p nest-tools,nest-tools-app` en verde, marca la tarea y para.

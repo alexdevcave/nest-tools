@@ -61,6 +61,7 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 - Si cambia un endpoint: `pnpm nx run nest-tools-app-e2e:e2e`, o `pnpm nx run nest-tools-app:serve` y `curl localhost:3000/api/<ruta>`.
 
 ## Memoria
+
 - Al empezar, lee `MEMORY.md` para conocer el estado del proyecto y las decisiones tomadas.
 - Al terminar una tarea, actualízalo: estado actual, decisiones importantes (con su porqué) y errores a evitar.
 - Mantenlo breve (máximo ~50 líneas): resume o elimina lo que ya no aporte.
@@ -68,15 +69,17 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 - No guardes nunca datos sensibles (claves, tokens, datos personales).
 
 ## Comandos
-- Tests: `pnpm nx run nest-tools-app:test`
+
+- Tests: `pnpm nx run-many -t test -p nest-tools,nest-tools-app`
 
 ## Reglas
+
 - Lee `docs/constitution.md` y la spec activa (`specs/NNN-*/`) antes de tocar código.
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 
-# Pautas generales para trabajar con Nx
+## Pautas generales para trabajar con Nx
 
 - Para navegar o explorar el workspace, invoca primero la skill `nx-workspace`: tiene patrones para consultar proyectos, targets y dependencias.
 - Al ejecutar tareas (build, lint, test, e2e, etc.), ejecútalas siempre a través de `nx` (`nx run`, `nx run-many`, `nx affected`) en lugar de usar directamente la herramienta subyacente.
