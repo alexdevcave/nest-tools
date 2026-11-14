@@ -7,7 +7,7 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 - Nx 24, pnpm 12, NestJS 11, TypeScript 6.0, Jest 30, ESLint 9 (flat config), Prettier 3.
 - `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Todas las rutas cuelgan del prefijo global `/api`, en el puerto `PORT` (por defecto 3000).
 - `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
-- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS (`NestToolsModule`), compilada con `@nx/js:tsc`.
+- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts` (hoy vacío); el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
 - `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
 
