@@ -2,11 +2,43 @@
   "name": "@alexdevcave/nest-tools",
   "version": "0.0.1",
   "private": true,
+  "description": "Small, opt-in utilities for NestJS applications.",
+  "keywords": [
+    "nestjs",
+    "nest",
+    "utilities",
+    "tools",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "alexdevcave",
+  "homepage": "https://github.com/alexdevcave/nest-tools/tree/main/libs/nest-tools#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexdevcave/nest-tools.git",
+    "directory": "libs/nest-tools"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts"
+  ],
   "dependencies": {
-    "@nestjs/common": "^11.0.0",
     "tslib": "^2.3.0"
   }
 }

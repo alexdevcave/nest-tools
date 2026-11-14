@@ -13,12 +13,7 @@
         "tsConfig": "libs/nest-tools/tsconfig.lib.json",
         "packageJson": "libs/nest-tools/package.json",
         "main": "libs/nest-tools/src/index.ts",
-        "assets": ["libs/nest-tools/*.md"]
-      }
-    },
-    "test": {
-      "options": {
-        "passWithNoTests": true
+        "assets": ["libs/nest-tools/*.md", "libs/nest-tools/LICENSE"]
       }
     }
   }
