@@ -38,10 +38,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
-.nx/migrate-runs
+# Nx
+.nx
+
 .claude/worktrees
 .claude/settings.local.json
-
-.nx/polygraph
