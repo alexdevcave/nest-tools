@@ -8,6 +8,7 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - Workspace migrado de npm a pnpm 12: `pnpm-lock.yaml`, `packageManager: pnpm@12.18.0`, comandos `pnpm nx` en `CLAUDE.md` y `README.md`.
 - Imagen Docker construida y probada: arranca y `GET /api/health` responde `ok`.
 - `CLAUDE.md` en español con la plantilla del proyecto; el bloque de Nx va al final, entre sus marcadores.
+- Migración a pnpm y limpieza de agentes en `main` (commits `c8a4048`…`8e1d347`).
 - `docs/constitution.md` aprobada (6 principios). El código actual incumple el principio 5: `POST /api/todos` acepta cualquier body.
 
 ## Decisiones (y por qué)
@@ -25,5 +26,4 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 ## Próximos pasos
 
 - Valorar quitar `@nestjs-template/types` de `apps/api/package.json` (solo son tipos y tsdown ya los incluye) para volver a `--frozen-lockfile` en Docker.
-- Hacer commit de la migración a pnpm y de la limpieza de configuraciones de agentes.
 - Spec para validar a mano la entrada de `todos` (sin `class-validator`) y cumplir el principio 5.
