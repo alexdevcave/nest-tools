@@ -54,7 +54,7 @@ Cada FR debe ser verificable: nada de "rápido", "intenso" o "bonito" sin un cri
 
 ## Plan (plan.md)
 
-Archivos y responsabilidades · API pública (lo que se exporta desde `libs/nest-tools/src/index.ts`: clases, decoradores, opciones y tipos) · Configuración y valores por defecto (`forRoot`/`forRootAsync` si aplica) · Integración con Nest (módulo, providers, uso global o por ruta) · Compatibilidad (`peerDependencies`, Express y Fastify, impacto semver) · Documentación pública (README en inglés y JSDoc) · Decisiones justificadas con su alternativa descartada · Estrategia de tests con Jest y `@nestjs/testing`: unitarios de la lógica sin Nest, de integración con un módulo de prueba, y lo que se valida con e2e en `nest-tools-app`. Indica qué FR cubre cada parte.
+Archivos y responsabilidades · API pública (lo que se exporta desde `libs/nest-tools/src/index.ts`: clases, decoradores, opciones y tipos) · Configuración y valores por defecto (`forRoot`/`forRootAsync` si aplica) · Integración con Nest (módulo, providers, uso global o por ruta) · Compatibilidad (`peerDependencies`, Express y Fastify, impacto semver) · Documentación pública (README en inglés y JSDoc) · Decisiones justificadas con su alternativa descartada · Estrategia de tests con Jest y `@nestjs/testing`: unitarios de la lógica sin Nest, de integración con un módulo de prueba, y lo que se valida con e2e en `nest-tools-app` · Demostración en `apps/nest-tools-app` (principio 4): una ruta por cada caso de la spec, su e2e y la comprobación funcional a mano (la app arrancada y `curl`). Indica qué FR cubre cada parte.
 
 ## Tareas (tasks.md)
 
@@ -63,8 +63,10 @@ Archivos y responsabilidades · API pública (lo que se exporta desde `libs/nest
 - Hecho cuando: <comprobación verificable>.
 ```
 
-Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, propón dividir la spec.
+Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, propón dividir la spec. Toda spec de una herramienta incluye una tarea de demostración en la app de pruebas (rutas y e2e) y otra de comprobación funcional a mano, antes de la verificación final.
 
 ## Implementación
 
 Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run-many -t test -p nest-tools,nest-tools-app` en verde, marca la tarea y para.
+
+Una spec de una herramienta no pasa a `implemented` sin su demostración en `apps/nest-tools-app`, comprobada con e2e y a mano (principio 4).
