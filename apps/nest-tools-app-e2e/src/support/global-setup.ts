@@ -5,7 +5,7 @@ declare global {
 }
 
 module.exports = async function (): Promise<void> {
-  // Start services that that the app needs to run (e.g. database, docker-compose, etc.).
+  // Start services that the app needs to run (e.g. database, docker-compose, etc.).
   const host: string = process.env.HOST ?? 'localhost';
   const port: number = process.env.PORT ? Number(process.env.PORT) : 3000;
   console.log('\nSetting up...\n');
