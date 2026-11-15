@@ -1,6 +1,6 @@
 # Tareas 001 — Paquete publicable
 
-Spec: `spec.md` (approved) · Plan: `plan.md` (approved). Los comandos V1-V7 están definidos en la estrategia de tests del plan.
+Spec: `spec.md` (approved) · Plan: `plan.md` (approved). Los comandos V1-V7 están definidos en la estrategia de tests del plan. T9-T10 aplican el cambio del 2026-11-15 (FR-1, FR-5, FR-9 y NFR-1, a raíz de la spec 003).
 
 - [x] **T1. Vaciar la API pública con sus tests primero.** FR-5, NFR-1
       Crear `libs/nest-tools/src/index.spec.ts` con `FR-5 public entry point exports nothing` y `NFR-1 importing has no side effects` y verlos fallar; después borrar `nest-tools.module.ts`, dejar `index.ts` como `export {}` con su JSDoc en inglés y quitar `passWithNoTests` de `project.json`.
@@ -33,3 +33,11 @@ Spec: `spec.md` (approved) · Plan: `plan.md` (approved). Los comandos V1-V7 est
 - [x] **T8. Verificación completa.** FR-1 a FR-9, NFR-1, NFR-2
       Ejecutar V1 a V7 de una vez sobre un build limpio.
 - Hecho cuando: V1 a V7 dan el resultado esperado y la tabla de cobertura del plan queda comprobada requisito a requisito.
+
+- [x] **T9. Tests del punto de entrada agrupados por spec.** FR-5, NFR-1
+      En `libs/nest-tools/src/index.spec.ts`, agrupar los tests en `describe('spec 001 publishable package', …)`; cambiar `FR-5 public entry point exports nothing` por `FR-5 public entry point exports only the listed public API`, que compara `Object.keys` del módulo con una lista explícita (`[]`); y en `NFR-1 importing has no side effects of its own`, dentro del mismo `jest.isolateModulesAsync`, cargar `@nestjs/common` y `@nestjs/core`, después poner los espías y por último importar `./index`.
+- Hecho cuando: `pnpm nx run nest-tools:test` pasa con los 2 tests dentro de `describe('spec 001 publishable package', …)`. Opcional: con un `import '@nestjs/common'` temporal en `index.ts` el test NFR-1 sigue en verde, y con una lectura temporal de `process.env` falla (deshacer los dos cambios).
+
+- [x] **T10. README, V6 nuevo y verificación.** FR-9, NFR-2
+      En la tabla de soporte de `libs/nest-tools/README.md`, NestJS pasa de `10 and 11` a `11 and 12`, con una nota de que NestJS 12 requiere Node.js 20.19+ o 22.12+; ejecutar V1, V6 y V7, volver a poner `Status: implemented` en la spec y actualizar `MEMORY.md`.
+- Hecho cuando: V1 está en verde, V6 no devuelve coincidencias, V7 confirma la tabla con `11 and 12` y la nota de Node para NestJS 12, y `grep -n "10 and 11" libs/nest-tools/README.md` no devuelve nada.
