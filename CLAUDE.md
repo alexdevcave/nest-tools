@@ -5,9 +5,9 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 ## Stack y estructura
 
 - Nx 24, pnpm 12, NestJS 11, TypeScript 6.0, Jest 30, ESLint 9 (flat config), Prettier 3.
-- `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Todas las rutas cuelgan del prefijo global `/api`, en el puerto `PORT` (por defecto 3000).
+- `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Todas las rutas cuelgan del prefijo global `/api`, en el puerto `PORT` (por defecto 3000). Registra `AllExceptionsFilter` de la lib con `APP_FILTER` en `app.module.ts`.
 - `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
-- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts` (hoy vacío); el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
+- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
 - `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
 
@@ -17,7 +17,7 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 pnpm nx run nest-tools-app:serve                                    # dev con webpack en modo watch
 pnpm nx run nest-tools-app:build
 pnpm nx run nest-tools-app:test                                     # Jest (vía plugin @nx/jest)
-pnpm nx run nest-tools-app:test --testFile=app.service.spec.ts      # un solo spec
+pnpm nx run nest-tools-app:test --testPathPatterns=app.service     # un solo spec (Jest 30)
 pnpm nx run nest-tools-app-e2e:e2e                                  # levanta la app y lanza los e2e
 pnpm nx run-many -t lint test build
 pnpm nx affected -t build,test,lint
@@ -31,6 +31,12 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 - Patrón de referencia: `apps/nest-tools-app/src/app/app.controller.ts` + `app.service.ts` (el controlador delega en un servicio `@Injectable()` inyectado por constructor). Registra controladores y servicios en `app.module.ts`.
 - Tests unitarios junto al archivo (`*.spec.ts`) con `Test.createTestingModule` de `@nestjs/testing`.
 - El código y sus comentarios están en inglés; las respuestas al usuario, en español.
+- Funciones con nombre como `function`, también las internas; las funciones flecha, solo para callbacks en línea.
+- Dentro de cada función: primero las constantes, después las variables (`let`) y luego la lógica. Las constantes que dependen de una comprobación (por ejemplo, leer una propiedad de algo que puede ser `undefined`) van justo después de esa comprobación.
+- Todo tipado: parámetros y retorno de todas las funciones (también los callbacks), campos de clase, constantes y variables, aunque TypeScript pudiera deducirlo, también con literales (`const path: string = '/api'`); `unknown` en lugar de `any`.
+- Interfaces en archivos aparte, una por archivo, en una carpeta `interfaces/` junto al código que las usa (`<nombre>.interface.ts`), como hace NestJS.
+- Miembros de clase con modificador explícito (`public`, `protected` o `private`) y `readonly` si no se reasignan; el constructor, sin `public`. Fuera de una clase los modificadores no existen: la visibilidad la da `export`, y la API pública de la lib es solo lo que exporta `libs/nest-tools/src/index.ts`.
+- En `libs/nest-tools`, `apps/nest-tools-app` y `apps/nest-tools-app-e2e`, ESLint exige `func-style` (declaración), `@typescript-eslint/explicit-function-return-type` y `@typescript-eslint/explicit-member-accessibility`, y desactiva `@typescript-eslint/no-inferrable-types` para poder anotar también los literales (decisión del usuario); el tipo de las variables se revisa en el diff.
 
 ## Reglas de dominio / trampas conocidas
 
