@@ -44,6 +44,8 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - Jest 30: `--testFile` no filtra (ejecuta todas las suites); el filtro es `--testPathPatterns=<patrón>`, y `--testPathPattern` en singular da error.
 - Nunca ejecutar `pnpm` ni `pnpm exec` dentro de `libs/*`: como no son paquetes del workspace, pnpm instala allí un `node_modules` propio (con NestJS 12 en ESM) y un `pnpm-lock.yaml`. Los comandos, siempre desde la raíz con `pnpm nx`.
 - Fastify rechaza un body demasiado grande por su `Content-Length` y cierra la conexión sin leerlo: un cliente que siga enviando puede recibir `ECONNRESET`. El test del 413 usa `node:http` y a Fastify solo le envía las cabeceras.
+- Con Express, el parser del body es un middleware global: un JSON roto o un body demasiado grande dan 400/413 antes de buscar la ruta (aunque no exista).
+- Para la prueba a mano: arrancar `pnpm nx run nest-tools-app:serve` en segundo plano con `NO_COLOR=1` y el log a un archivo, esperar con `curl --retry-connrefused` (el `sleep` en primer plano está bloqueado) y, al terminar, parar todo el árbol de procesos de `serve` y comprobar el puerto 3000.
 - Si el e2e falla en `globalSetup` con «Waiting for nest-tools-app:serve in another nx process», hay un `nx run nest-tools-app:serve` colgado: pararlo (con permiso) y repetir.
 
 ## Próximos pasos
@@ -53,7 +55,8 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
   - 4xx sin mensaje en el log: Nest mete la query y trozos del body en sus mensajes. 5xx con mensaje y stack, nunca el objeto entero (Nest lo vuelca con `inspect`).
   - Errores HTTP externos solo con la marca `expose` de `http-errors`: respetar cualquier `statusCode` filtraría errores de SDK de terceros. Una excepción fuera de 4xx/5xx da 500 porque Fastify rechaza códigos que Express acepta.
   - Fuera de HTTP devuelve el error sin cambios (lo que Nest documenta para GraphQL). Riesgo para una futura spec de RPC: ahí un filtro debe devolver un Observable.
-- Siguiente: `/commit` de todo lo de las specs 001 (cambio) y 003, que está sin commitear.
+- Cambio en la 003 (2026-11-15, principio 4 enmendado a petición del usuario: cada herramienta se demuestra en la app de pruebas con una ruta por caso, e2e y prueba a mano): spec vuelve a `approved`; plan con 13 rutas bajo `/api/errors` y V8 (prueba a mano). T11 hecha (`ErrorsController`, registro con `useFactory` y `LOG_CLIENT_ERRORS`, e2e 17/17) y T12 hecha (V8: respuestas y logs reales correctos, también con `LOG_CLIENT_ERRORS=false`). Después, a petición del usuario, `ErrorsService` con los errores de negocio (el controlador delega; `items/:id`, `partial-response` y `echo` se quedan en él por ser de HTTP); el stack del log apunta al servicio. Spec de nuevo `implemented` (2026-11-15).
+- Commits del 2026-11-15 en `main`, con push hasta `da25e03`; después, sin push, la regla de demostrar cada herramienta en la app (principio 4) y la demo de la 003. Siguiente: push si se pide; después, la spec 004 (función para crear errores) o la 002 (release).
 - Spec `004` (nombre por decidir), después de la 003: una función para crear errores HTTP de forma uniforme (código, mensaje y datos extra como `code`); que devuelva una excepción HTTP de Nest y el `throw` lo escriba el desarrollador.
 - Después: la `002-release-process`, que quita la marca de privado y publica.
 - Decidir si se borra `packages/types`.
