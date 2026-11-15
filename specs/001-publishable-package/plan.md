@@ -36,8 +36,8 @@ Campos del manifiesto `libs/nest-tools/package.json` (el build lo copia tal cual
 | `description`             | `Small, opt-in utilities for NestJS applications.`                                                              | FR-3       |
 | `keywords`                | `nestjs`, `nest`, `utilities`, `tools`, `typescript`                                                            | FR-3       |
 | `engines`                 | `{ "node": ">=20" }`                                                                                            | FR-3       |
-| `repository`              | `{ "type": "git", "url": "git+https://github.com/alexdevcave/nest-tools.git", "directory": "libs/nest-tools" }` | FR-4       |
-| `homepage`                | `https://github.com/alexdevcave/nest-tools/tree/main/libs/nest-tools#readme`                                    | FR-4       |
+| `repository`              | `{ "type": "git", "url": "git+https://github.com/brickstodev/nest-tools.git", "directory": "libs/nest-tools" }` | FR-4       |
+| `homepage`                | `https://github.com/brickstodev/nest-tools/tree/main/libs/nest-tools#readme`                                    | FR-4       |
 | `type` / `main` / `types` | `commonjs` / `./src/index.js` / `./src/index.d.ts`                                                              | FR-5       |
 | `exports`                 | `{ ".": { "types": "./src/index.d.ts", "default": "./src/index.js" }, "./package.json": "./package.json" }`     | FR-5, FR-6 |
 | `files`                   | `["src/**/*.js", "src/**/*.d.ts"]` (npm añade siempre `package.json`, `README.md` y `LICENSE`)                  | FR-7, FR-8 |
