@@ -9,9 +9,8 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap(): Promise<void> {
   const app: INestApplication = await NestFactory.create(AppModule);
-  const globalPrefix: string = 'api';
   const port: string | number = process.env.PORT || 3000;
-  app.setGlobalPrefix(globalPrefix);
+  app.setGlobalPrefix('');
   await app.listen(port);
   // Set when Nx waits for this server to be ready
   if (process.env.NX_READY_SIGNAL_SOCKET) {
@@ -25,7 +24,7 @@ async function bootstrap(): Promise<void> {
       // @nx/js isn't installed
     }
   }
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
-bootstrap();
+bootstrap().then();

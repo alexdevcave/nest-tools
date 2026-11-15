@@ -7,12 +7,12 @@ import { ErrorsService } from './errors.service';
 export class ErrorsController {
   constructor(private readonly errorsService: ErrorsService) {}
 
-  @Get('not-found')
+  @Get('user-not-found')
   public notFound(): never {
     return this.errorsService.findUser();
   }
 
-  @Get('with-code')
+  @Get('user-with-code')
   public withCode(): never {
     return this.errorsService.findUserWithCode();
   }
@@ -27,7 +27,7 @@ export class ErrorsController {
     return { id };
   }
 
-  @Get('validation')
+  @Get('validate-user')
   public validation(): never {
     return this.errorsService.validateUser();
   }
