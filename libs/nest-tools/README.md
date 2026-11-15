@@ -1,5 +1,7 @@
 # @alexdevcave/nest-tools
 
+**English** | [Español](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.es.md) | [Français](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.fr.md) | [Italiano](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.it.md) | [Deutsch](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.de.md)
+
 Small, opt-in utilities for [NestJS](https://nestjs.com) applications.
 
 Each tool is imported and enabled explicitly: installing or importing the package does not change your application on its own, and it does not depend on a specific HTTP platform (Express or Fastify).

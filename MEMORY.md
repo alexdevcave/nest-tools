@@ -5,11 +5,11 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 ## Estado actual
 
 - `apps/nest-tools-app` (generada con `@nx/nest`, build con webpack) sustituye a `apps/api`: expone `GET /` (hello) y la demo del filtro en `/errors`; desde el 2026-11-15 no usa prefijo global (decisión del usuario). Se fueron `health`, `todos`, el `Dockerfile` y tsdown.
-- `libs/nest-tools` (`@alexdevcave/nest-tools`): API pública vacía (`export {}`); `index.spec.ts` con un `describe` por spec (FR-5 con la lista `PUBLIC_API_EXPORTS`, NFR-1 con Nest precargado); solo `tslib` como dependencia; metadatos públicos, `exports`, `files`, LICENSE MIT y README en inglés (soporte NestJS 11 y 12). Sigue `private: true` en 0.0.1.
+- `libs/nest-tools` (`@alexdevcave/nest-tools`): API pública `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; `index.spec.ts` con un `describe` por spec (FR-5 con la lista `PUBLIC_API_EXPORTS`, NFR-1 con Nest precargado); solo `tslib` como dependencia; metadatos públicos, `exports`, `files`, LICENSE MIT y README en inglés (soporte NestJS 11 y 12) con traducciones `README.<es|fr|it|de>.md` (2026-11-15, principio 6: se actualizan en el mismo cambio; el build las copia y npm las empaqueta). Sigue `private: true` en 0.0.1.
 - `packages/types` ya no lo importa ningún proyecto.
 - Workspace en pnpm 12 (`packageManager: pnpm@12.18.0`), comandos `pnpm nx` en `CLAUDE.md` y `README.md`.
 - `CLAUDE.md` en español con la plantilla del proyecto; el bloque de Nx va al final, entre sus marcadores.
-- `docs/constitution.md`: 7 principios, enmendada el 2026-11-14 (librería pública en npm; principio 5: respuestas frente a logs) y el 2026-11-15 (principio 7: efectos propios al importar y peers aunque sean solo tipos). Principio 2: los FR de configuración o de proceso se verifican con un comando documentado en el plan.
+- `docs/constitution.md`: 7 principios, enmendada el 2026-11-14 (librería pública en npm; principio 5: respuestas frente a logs) y el 2026-11-15 (principio 7: efectos propios al importar y peers aunque sean solo tipos; principio 4: demostración en la app; principio 6: traducciones del README). Principio 2: los FR de configuración o de proceso se verifican con un comando documentado en el plan.
 - Spec `001-publishable-package` `implemented` de nuevo tras el `/sdd-change` del 2026-11-15 (FR-1, FR-5, FR-9 y NFR-1, por la 003): T1-T10 hechas; validada con el `reviewer`, V1-V7 y e2e en verde.
 
 ## Decisiones (y por qué)
