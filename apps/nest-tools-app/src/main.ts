@@ -3,21 +3,23 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
+async function bootstrap(): Promise<void> {
+  const app: INestApplication = await NestFactory.create(AppModule);
+  const globalPrefix: string = 'api';
+  const port: string | number = process.env.PORT || 3000;
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
   await app.listen(port);
   // Set when Nx waits for this server to be ready
   if (process.env.NX_READY_SIGNAL_SOCKET) {
     try {
       // Function keeps TypeScript and bundlers from rewriting or bundling the import
-      const load = new Function('s', 'return import(s)') as (s: string) => Promise<{ emitReadySignal(server: unknown): boolean }>;
+      const load: (s: string) => Promise<{ emitReadySignal(server: unknown): boolean }> = new Function('s', 'return import(s)') as (
+        s: string,
+      ) => Promise<{ emitReadySignal(server: unknown): boolean }>;
       (await load('@nx/js/ready-signal')).emitReadySignal(app.getHttpServer());
     } catch {
       // @nx/js isn't installed
