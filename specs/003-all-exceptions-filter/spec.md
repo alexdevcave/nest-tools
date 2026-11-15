@@ -12,6 +12,8 @@ Depende de dos cambios previos en la spec 001: su NFR-1 («sin efectos al import
 
 Para comprobar la NFR-1 de esta spec, el workspace necesita la plataforma Fastify de NestJS como dependencia de desarrollo (principio 1); no forma parte del paquete publicado.
 
+Cambiada el 2026-11-15 para añadir la demostración del filtro en la app de pruebas (principio 4).
+
 ## Usuarios
 
 - **Desarrollador:** activa el filtro en su aplicación NestJS.
@@ -83,7 +85,7 @@ Para comprobar la NFR-1 de esta spec, el workspace necesita la plataforma Fastif
 - Los logs cumplen FR-5, FR-6 y FR-8, con el registro de errores de cliente activado y desactivado.
 - Fuera de HTTP, el filtro no responde ni registra y devuelve el error sin cambios (FR-9).
 - El README cumple FR-10, y la NFR-1 y la política de soporte de la spec 001 están ajustadas antes de implementar esta spec.
-- La librería cumple los principios 3, 4, 5, 6 y 7 de la constitución.
+- La librería cumple los principios 3, 4, 5, 6 y 7 de la constitución, incluida la demostración del filtro en la app de pruebas (principio 4): una ruta por cada caso de la spec, comprobada con e2e y a mano.
 
 ## Preguntas abiertas
 

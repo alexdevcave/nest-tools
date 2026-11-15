@@ -1,8 +1,10 @@
 # Tareas 003 — Filtro de excepciones para todas las peticiones HTTP
 
-Spec: `spec.md` (approved) · Plan: `plan.md` (approved). Los comandos V1-V7 están en la estrategia de tests del plan; los archivos nuevos van en `libs/nest-tools/src/lib/all-exceptions-filter/`.
+Spec: `spec.md` (approved) · Plan: `plan.md` (approved). Los comandos V1-V8 están en la estrategia de tests del plan; los archivos nuevos de la lib van en `libs/nest-tools/src/lib/all-exceptions-filter/`.
 
 Requisito previo: el `/sdd-change` de la 001 (NFR-1, FR-5, FR-9 y V6) aplicado y en verde antes de T1.
+
+T11-T12 aplican el cambio del 2026-11-15 (demostración en la app de pruebas, principio 4). Son 12 tareas, más de las 10 que marca la skill sdd, porque el usuario pidió expresamente que el cambio vaya en la 003 y no en una spec aparte.
 
 - [x] **T1. Opciones del filtro, primero los tests.** FR-7
       Crear `all-exceptions-filter.options.spec.ts` (valor por defecto `true`, `false`, `'false'` y opciones que no son objeto) y verlo fallar; después `all-exceptions-filter.options.ts` con la interfaz `AllExceptionsFilterOptions` y la función que aplica el valor por defecto y lanza `TypeError`. Ajustada el 2026-11-15: la interfaz vive en `interfaces/all-exceptions-filter-options.interface.ts`.
@@ -43,3 +45,11 @@ Requisito previo: el `/sdd-change` de la 001 (NFR-1, FR-5, FR-9 y V6) aplicado y
 - [x] **T10. Verificación completa y documentación interna.** FR-1 a FR-10, NFR-1 a NFR-4
       Ejecutar V1 a V7 sobre un build limpio, incluido V5 con NestJS 12 en un proyecto temporal; actualizar la línea de `libs/nest-tools` en `CLAUDE.md` y el estado en `MEMORY.md`.
 - Hecho cuando: V1 a V7 dan el resultado esperado, la tabla de cobertura del plan queda comprobada requisito a requisito y `grep -n "hoy vacío" CLAUDE.md` no devuelve nada.
+
+- [x] **T11. Demostración en la app de pruebas, primero los e2e.** FR-2, FR-3, FR-4, FR-5, FR-6, FR-7
+      Crear `apps/nest-tools-app-e2e/src/nest-tools-app/errors.spec.ts` con un test por cada ruta y caso de la tabla «Demostración en la app de pruebas» del plan, con su FR o caso límite en el nombre, y verlo fallar (las rutas aún no existen); después crear `apps/nest-tools-app/src/app/errors/errors.controller.ts` sin servicio, registrarlo en `app.module.ts` y pasar el filtro a `APP_FILTER` con `useFactory`, `inject: [HttpAdapterHost]` y `logClientErrors: process.env['LOG_CLIENT_ERRORS'] !== 'false'`. Ajustada el 2026-11-15: `ErrorsService` con los errores de negocio y su spec; el controlador delega en él.
+- Hecho cuando: `pnpm nx run nest-tools-app-e2e:e2e` está en verde con un test por cada ruta y caso de la tabla, además de los dos que ya había, y `pnpm nx run-many -t lint test build -p nest-tools-app,nest-tools-app-e2e` también.
+
+- [x] **T12. Comprobación funcional a mano.** FR-2 a FR-8
+      Ejecutar V8 desde la sesión principal: la app arrancada, `curl` a cada ruta y revisión de los logs, primero con los valores por defecto y después con `LOG_CLIENT_ERRORS=false`.
+- Hecho cuando: V8 da lo esperado y la sesión principal ha enseñado al usuario las respuestas y los logs reales; puerto 3000 libre.
