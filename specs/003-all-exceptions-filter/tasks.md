@@ -35,8 +35,8 @@ T11-T12 aplican el cambio del 2026-11-15 (demostración en la app de pruebas, pr
 - Hecho cuando: el archivo pasa con las dos plataformas, los tres casos globales dan el mismo código y la misma forma de cuerpo en ambas, y ningún log capturado contiene `secret`.
 
 - [x] **T8. Ejemplo en la app y e2e.** FR-1, FR-2
-      Registrar el filtro con `APP_FILTER` en `apps/nest-tools-app/src/app/app.module.ts` y añadir al e2e `GET /api/does-not-exist?x=1` (404 con los cinco campos y `path` `/api/does-not-exist`).
-- Hecho cuando: V2 (`pnpm nx run nest-tools-app-e2e:e2e`) está en verde con el test nuevo y el de `GET /api`.
+      Registrar el filtro con `APP_FILTER` en `apps/nest-tools-app/src/app/app.module.ts` y añadir al e2e `GET /does-not-exist?x=1` (404 con los cinco campos y `path` `/does-not-exist`).
+- Hecho cuando: V2 (`pnpm nx run nest-tools-app-e2e:e2e`) está en verde con el test nuevo y el de `GET /`.
 
 - [x] **T9. README en inglés.** FR-10
       Añadir a `libs/nest-tools/README.md` la sección del filtro: qué hace, formas de activación y qué cubre cada una, la de la opción, formato con ejemplos, qué se registra con cada nivel y el aviso sobre mensajes y stacks de 5xx, la opción y su validación, GraphQL/WebSockets/microservicios, Express/Fastify y que los mensajes que genera NestJS pueden repetir parte de la petición en la respuesta.
