@@ -7,7 +7,7 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 - Nx 24, pnpm 12, NestJS 11, TypeScript 6.0, Jest 30, ESLint 9 (flat config), Prettier 3.
 - `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Las rutas cuelgan de la raíz (sin prefijo global), en el puerto `PORT` (por defecto 3000). Registra `AllExceptionsFilter` de la lib con `APP_FILTER` en `app.module.ts`.
 - `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
-- `libs/nest-tools` (`@alexdevcave/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
+- `libs/nest-tools` (`@brickstodev/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
 - `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
 
@@ -41,7 +41,7 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 ## Reglas de dominio / trampas conocidas
 
 - `tsconfig.base.json` debe mantener `experimentalDecorators` + `emitDecoratorMetadata`: sin ellos, la DI y el enrutado de Nest se rompen sin error de compilación.
-- Las libs se importan por los alias de `paths` en `tsconfig.base.json` (`@alexdevcave/nest-tools`, `@nestjs-template/types`). Una lib nueva necesita su alias ahí.
+- Las libs se importan por los alias de `paths` en `tsconfig.base.json` (`@brickstodev/nest-tools`, `@nestjs-template/types`). Una lib nueva necesita su alias ahí.
 - `pnpm-workspace.yaml` no declara `packages:`, así que `apps/*` y `packages/*` no son paquetes del workspace de pnpm; las libs solo se resuelven por ese alias.
 - Los DTOs son interfaces: no existen en tiempo de ejecución y **no hay validación** del body (no hay `class-validator` ni `ValidationPipe`).
 - Límites de módulos (`eslint.config.mjs`): `scope:api` puede depender de `scope:shared`/`scope:api`, y `scope:shared` solo de `scope:shared`. `nest-tools-app` es `scope:api`; `nest-tools` y `types` son `scope:shared`. Etiqueta (`tags`) cada proyecto nuevo: los generadores lo dejan vacío.

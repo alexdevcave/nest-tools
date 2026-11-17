@@ -1,4 +1,4 @@
-# @alexdevcave/nest-tools
+# @brickstodev/nest-tools
 
 [English](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.md) | [Español](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.es.md) | [Français](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.fr.md) | [Italiano](https://github.com/brickstodev/nest-tools/blob/main/libs/nest-tools/README.it.md) | **Deutsch**
 
@@ -15,11 +15,11 @@ Jedes Tool wird explizit importiert und aktiviert: Das Installieren oder Importi
 ## Installation
 
 ```sh
-npm install @alexdevcave/nest-tools
+npm install @brickstodev/nest-tools
 ```
 
 ```sh
-pnpm add @alexdevcave/nest-tools
+pnpm add @brickstodev/nest-tools
 ```
 
 ## AllExceptionsFilter
@@ -37,7 +37,7 @@ Global, wobei Nest den Filter erstellt (empfohlen):
 ```ts
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from '@alexdevcave/nest-tools';
+import { AllExceptionsFilter } from '@brickstodev/nest-tools';
 
 @Module({
   providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
@@ -50,7 +50,7 @@ Global, mit der [Option](#optionen), über eine Factory:
 ```ts
 import { Module } from '@nestjs/common';
 import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
-import { AllExceptionsFilter } from '@alexdevcave/nest-tools';
+import { AllExceptionsFilter } from '@brickstodev/nest-tools';
 
 @Module({
   providers: [
@@ -233,4 +233,4 @@ NestJS 12 erfordert Node.js 20.19+ oder 22.12+.
 
 ## Lizenz
 
-[MIT](./LICENSE) © 2026 alexdevcave
+[MIT](./LICENSE) © 2026 brickstodev

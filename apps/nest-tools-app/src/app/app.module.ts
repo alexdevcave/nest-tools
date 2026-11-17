@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
-import { AllExceptionsFilter } from '@alexdevcave/nest-tools';
+import { AllExceptionsFilter } from '@brickstodev/nest-tools';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ErrorsController } from './errors/errors.controller';

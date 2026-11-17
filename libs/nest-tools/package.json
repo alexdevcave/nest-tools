@@ -1,5 +1,5 @@
 {
-  "name": "@alexdevcave/nest-tools",
+  "name": "@brickstodev/nest-tools",
   "version": "0.0.1",
   "private": true,
   "description": "Small, opt-in utilities for NestJS applications.",
@@ -11,7 +11,7 @@
     "typescript"
   ],
   "license": "MIT",
-  "author": "alexdevcave",
+  "author": "brickstodev",
   "homepage": "https://github.com/brickstodev/nest-tools/tree/main/libs/nest-tools#readme",
   "repository": {
     "type": "git",

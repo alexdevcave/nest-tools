@@ -75,7 +75,7 @@ nestjs-template/
 |  |  |- src/app/          # Root module, controller and service
 |  |- nest-tools-app-e2e/  # Jest + axios e2e tests against the running app
 |- libs/
-|  |- nest-tools/          # NestJS library, imported as @alexdevcave/nest-tools
+|  |- nest-tools/          # NestJS library, imported as @brickstodev/nest-tools
 |- packages/
    |- types/               # Shared DTOs and interfaces (scope:shared tag)
 ```

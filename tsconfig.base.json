@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "paths": {
       "@nestjs-template/types": ["./packages/types/src/index.ts"],
-      "@alexdevcave/nest-tools": ["./libs/nest-tools/src/index.ts"]
+      "@brickstodev/nest-tools": ["./libs/nest-tools/src/index.ts"]
     },
     "strict": false,
     "noUncheckedSideEffectImports": false,

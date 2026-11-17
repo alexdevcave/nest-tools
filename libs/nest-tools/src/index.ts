@@ -1,5 +1,5 @@
 /**
- * Public entry point of `@alexdevcave/nest-tools`.
+ * Public entry point of `@brickstodev/nest-tools`.
  *
  * Everything consumers can use is exported from this file only:
  * - `AllExceptionsFilter`: an exception filter that gives every HTTP error the same response format and logs it by severity.

@@ -4,7 +4,7 @@ Status: implemented
 
 ## Contexto y objetivo
 
-Por defecto, NestJS responde a las excepciones HTTP con `{ statusCode, message, error }`, pero no dice en qué ruta ni cuándo ocurrió el error, y cada proyecto acaba escribiendo su propio filtro para unificar respuestas y logs. Es la primera herramienta de `@alexdevcave/nest-tools`.
+Por defecto, NestJS responde a las excepciones HTTP con `{ statusCode, message, error }`, pero no dice en qué ruta ni cuándo ocurrió el error, y cada proyecto acaba escribiendo su propio filtro para unificar respuestas y logs. Es la primera herramienta de `@brickstodev/nest-tools`.
 
 El objetivo es un filtro listo para usar que dé a todos los errores HTTP un formato uniforme y reconocible en Nest, que nunca exponga detalles internos (principio 5) y que registre los errores con un nivel según su gravedad, sin tratar los errores de fuera de HTTP. Tiene una única opción, para no registrar los errores de cliente.
 
