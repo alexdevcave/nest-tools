@@ -5,28 +5,28 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 ## Estado actual
 
 - `apps/nest-tools-app` (generada con `@nx/nest`, build con webpack) sustituye a `apps/api`: expone `GET /` (hello) y la demo del filtro en `/errors`; desde el 2026-11-15 no usa prefijo global (decisión del usuario). Se fueron `health`, `todos`, el `Dockerfile` y tsdown.
-- `libs/nest-tools` (`@alexdevcave/nest-tools`): API pública `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; `index.spec.ts` con un `describe` por spec (FR-5 con la lista `PUBLIC_API_EXPORTS`, NFR-1 con Nest precargado); solo `tslib` como dependencia; metadatos públicos, `exports`, `files`, LICENSE MIT y README en inglés (soporte NestJS 11 y 12) con traducciones `README.<es|fr|it|de>.md` (2026-11-15, principio 6: se actualizan en el mismo cambio; el build las copia y npm las empaqueta). Sigue `private: true` en 0.0.1.
+- `libs/nest-tools` (`@brickstodev/nest-tools`): API pública `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; `index.spec.ts` con un `describe` por spec (FR-5 con la lista `PUBLIC_API_EXPORTS`, NFR-1 con Nest precargado); solo `tslib` como dependencia; metadatos públicos, `exports`, `files`, LICENSE MIT y README en inglés (soporte NestJS 11 y 12) con traducciones `README.<es|fr|it|de>.md` (2026-11-15, principio 6: se actualizan en el mismo cambio; el build las copia y npm las empaqueta). Sigue `private: true` en 0.0.1.
 - `packages/types` ya no lo importa ningún proyecto.
 - Workspace en pnpm 12 (`packageManager: pnpm@12.18.0`), comandos `pnpm nx` en `CLAUDE.md` y `README.md`.
 - `CLAUDE.md` en español con la plantilla del proyecto; el bloque de Nx va al final, entre sus marcadores.
-- `docs/constitution.md`: 7 principios, enmendada el 2026-11-14 (librería pública en npm; principio 5: respuestas frente a logs) y el 2026-11-15 (principio 7: efectos propios al importar y peers aunque sean solo tipos; principio 4: demostración en la app; principio 6: traducciones del README). Principio 2: los FR de configuración o de proceso se verifican con un comando documentado en el plan.
-- Spec `001-publishable-package` `implemented` de nuevo tras el `/sdd-change` del 2026-11-15 (FR-1, FR-5, FR-9 y NFR-1, por la 003): T1-T10 hechas; validada con el `reviewer`, V1-V7 y e2e en verde.
+- `docs/constitution.md`: 7 principios, enmendada el 2026-11-14 (librería pública en npm; principio 5: respuestas frente a logs) y el 2026-11-15 (principio 7: efectos propios al importar y peers aunque sean solo tipos; principio 4: demostración en la app; principio 6: traducciones del README; principio 7: `perf` sube el patch en 0.x). Principio 2: los FR de configuración o de proceso se verifican con un comando documentado en el plan.
+- Spec `001-publishable-package` `implemented` de nuevo (2026-11-17) tras el `/sdd-change` por la 002 (`private` solo hasta la primera release; CHANGELOG en el paquete con `"CHANGELOG.md"` en `files`): T1-T12 hechas; V1-V3 en verde sobre build limpio (V3a 27 archivos, V3b 28 con un CHANGELOG temporal).
 
 ## Decisiones (y por qué)
 
 - pnpm en lugar de npm: es el gestor del resto de proyectos; se borró `package-lock.json`.
 - Solo configuración para Claude: se borraron `AGENTS.md`, `opencode.json` y las carpetas `.codex`, `.gemini`, `.cursor`, `.opencode`, `.github`. Se conserva `.agents/skills/`.
 - webpack (`@nx/webpack`, `webpack`, `webpack-cli`, `webpack-dev-server`) entra porque lo añadió el generador de la app y la lib; aprobado por el usuario. Se quitaron `tsdown` y `unrun`, que solo usaba `apps/api`.
-- Scope `@alexdevcave` solo para la lib; la raíz y la app siguen con `@nestjs-template`.
+- Scope `@brickstodev` solo para la lib (cambiado el 2026-11-15, antes de la primera publicación, porque el repositorio pasó a `brickstodev`); la raíz y la app siguen con `@nestjs-template`. El 2026-11-17 el usuario pasó también el autor y el copyright (LICENSE, README y traducciones, specs) a «brickstodev».
 - Tooling SDD (skill, agentes y comandos) sin restos de Angular; los tests se lanzan con `pnpm nx run-many -t test -p nest-tools,nest-tools-app`. Desde el 2026-11-15 se trabaja con los agentes `planner`, `implementer` y `reviewer` (petición del usuario).
 - Estilo del código (2026-11-15, petición del usuario; detalle en `CLAUDE.md`): funciones con nombre como `function`, constantes antes que variables y lógica (salvo las que dependen de una comprobación), todo tipado (también variables y callbacks) y modificadores de acceso en los miembros de clase. En la lib, ESLint exige `func-style`, `explicit-function-return-type` y `explicit-member-accessibility`; los tipos de variables y callbacks se revisan en el diff (`typedef` está obsoleta).
 - Herramientas candidatas para la lib: `AllExceptionsFilter`, `@Pagination()`, `RequestIdInterceptor`, `TimeoutInterceptor`, `LoggingInterceptor`. Se descartan `HealthModule`, `EnvService` y un pipe de validación propio porque ya los cubren `@nestjs/terminus`, `@nestjs/config` y `class-validator`/`zod`.
-- Spec 001: sus decisiones están en su spec y su plan (CommonJS, Node 20+, MIT a nombre de «alexdevcave» sin email, sin source maps, `private` hasta la 002, sin peers hasta importar Nest, solo `tslib`, soporte NestJS 11 y 12).
-- División: la release va a la futura `002-release-process` (versión desde Conventional Commits con el comportamiento 0.x de Nx: incompatible sube el minor; `feat`, `fix` y `perf`, el patch; 0.1.0 fija con «Initial release»; tags `nest-tools@x.y.z`; ensayo; release solo en local, sin push; publicación; quitar la marca de privado).
+- Spec 001: sus decisiones están en su spec y su plan (CommonJS, Node 20+, MIT a nombre de «brickstodev» sin email, sin source maps, `private` hasta la 002, sin peers hasta importar Nest, solo `tslib`, soporte NestJS 11 y 12).
+- Spec 002 (clarificación del 2026-11-16 con el usuario): se publica solo desde el commit del tag, que debe ser la versión más alta y estar en `main` del remoto (así `latest` nunca retrocede; una release superada sin publicar no llega a npm); si la release falla tras las comprobaciones, deshace lo suyo; se aceptan sin cambios el `revert` de un commit sin publicar, los commits mal tipados ya subidos y los cambios fuera de la lib (llegan con la siguiente versión).
 
 ## Aprendizajes y errores a evitar
 
-- `nx configure-ai-agents` (o actualizar Nx) vuelve a meter su bloque en inglés en `CLAUDE.md` y puede recrear `AGENTS.md`: no ejecutarlo aunque Nx lo sugiera.
+- `nx configure-ai-agents` (o actualizar Nx) vuelve a meter su bloque en inglés en `CLAUDE.md` y puede recrear `AGENTS.md`: no ejecutarlo aunque Nx lo sugiera. El 2026-11-17 el bloque volvió al inglés sin que nadie lo pidiera (probablemente Nx Console): revisar el diff de `CLAUDE.md` antes de cada commit.
 - `pnpm-workspace.yaml` no declara `packages:`; las libs solo se resuelven por los alias de `tsconfig.base.json`.
 - En 0.x, Nx baja major→minor y minor→patch por defecto (`adjustSemverBumpsForZeroMajorVersion`).
 - `@nx/dependency-checks` está en `error` en la lib, marca como obsoletas las peers que no se importan y solo mira los archivos de `production` (no los specs).
@@ -35,6 +35,7 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - `@nx/js:tsc` con `generateExportsField: false` (por defecto) respeta un `exports` escrito a mano en el manifiesto.
 - TypeScript 6.0 marca `moduleResolution: node10` como obsoleto: hace falta `--ignoreDeprecations 6.0`. En zsh las opciones de `tsc` guardadas en una variable no se parten en palabras.
 - V4/V5 se ejecutan en un proyecto temporal del scratchpad con `npm pack` + `npm install` del `.tgz` (necesita red).
+- npm 12 con `files` empaqueta siempre `package.json`, `LICENSE` y todos los `README*`, pero no `CHANGELOG.md` si `files` no lo lista; listado y ausente, `npm pack` no da error.
 - En tablas Markdown, los `|` dentro de código se escriben `\|`; si no, Prettier los toma como columnas y rompe el comando.
 - Desde ESM, Node muestra en el namespace de un paquete CommonJS `__esModule`, `default` y `module.exports`: es interoperabilidad de Node, no API pública.
 - Importar `@nestjs/common` lee `process.env.NO_COLOR`; el grep de imports del principio 7 encuentra `@nestjs/*` en `index.spec.ts` (test NFR-1): al aplicarlo, excluir los specs.
@@ -55,8 +56,8 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
   - 4xx sin mensaje en el log: Nest mete la query y trozos del body en sus mensajes. 5xx con mensaje y stack, nunca el objeto entero (Nest lo vuelca con `inspect`).
   - Errores HTTP externos solo con la marca `expose` de `http-errors`: respetar cualquier `statusCode` filtraría errores de SDK de terceros. Una excepción fuera de 4xx/5xx da 500 porque Fastify rechaza códigos que Express acepta.
   - Fuera de HTTP devuelve el error sin cambios (lo que Nest documenta para GraphQL). Riesgo para una futura spec de RPC: ahí un filtro debe devolver un Observable.
-- Cambio en la 003 (2026-11-15, principio 4 enmendado a petición del usuario: cada herramienta se demuestra en la app de pruebas con una ruta por caso, e2e y prueba a mano): spec vuelve a `approved`; plan con 13 rutas bajo `/errors` y V8 (prueba a mano). T11 hecha (`ErrorsController`, registro con `useFactory` y `LOG_CLIENT_ERRORS`, e2e 17/17) y T12 hecha (V8: respuestas y logs reales correctos, también con `LOG_CLIENT_ERRORS=false`). Después, a petición del usuario, `ErrorsService` con los errores de negocio (el controlador delega; `items/:id`, `partial-response` y `echo` se quedan en él por ser de HTTP); el stack del log apunta al servicio. Spec de nuevo `implemented` (2026-11-15).
-- Commits del 2026-11-15 en `main`, con push hasta `da25e03`; después, sin push, la regla de demostrar cada herramienta en la app (principio 4) y la demo de la 003. Siguiente: push si se pide; después, la spec 004 (función para crear errores) o la 002 (release).
-- Spec `004` (nombre por decidir), después de la 003: una función para crear errores HTTP de forma uniforme (código, mensaje y datos extra como `code`); que devuelva una excepción HTTP de Nest y el `throw` lo escriba el desarrollador.
-- Después: la `002-release-process`, que quita la marca de privado y publica.
+- Demo de la 003 (principio 4): 13 rutas bajo `/errors` (`ErrorsController` delega en `ErrorsService` los errores de negocio), e2e 17/17 y prueba a mano (V8), también con `LOG_CLIENT_ERRORS=false`.
+- Push a `main` hasta `91472f9` (2026-11-16). El 2026-11-17, tres commits más en `main`, sin push: renombrado a `brickstodev`, spec 002 con el principio 7, y CHANGELOG en el paquete (cambio de la 001).
+- Spec `002-release-process` `approved` (2026-11-16) y clarificada con el `reviewer` (25 hallazgos, todos resueltos con el usuario). Siguiente: `/sdd-plan 002`, que debe contar los commits por archivos de la lib, compilar la publicación sin la caché remota (`nx.json` tiene `nxCloudId` y `analytics: true`) y comprobar cómo publica npm con llave de seguridad; y `/sdd-tasks 002`.
+- Spec `004` (nombre por decidir): una función para crear errores HTTP de forma uniforme (código, mensaje y datos extra como `code`); que devuelva una excepción HTTP de Nest y el `throw` lo escriba el desarrollador.
 - Decidir si se borra `packages/types`.

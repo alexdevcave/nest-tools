@@ -36,7 +36,8 @@
   },
   "files": [
     "src/**/*.js",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "CHANGELOG.md"
   ],
   "dependencies": {
     "tslib": "^2.3.0"
