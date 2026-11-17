@@ -9,6 +9,7 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 - `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
 - `libs/nest-tools` (`@brickstodev/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
 - `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
+- `tools/release` (`release-tools`, `scope:tooling`): la herramienta de release de la lib (spec 002), en TypeScript y sin dependencias, compilada con `@nx/js:tsc` a `dist/tools/release`; no forma parte del paquete. La lanzan los scripts `release:*` del `package.json` raíz.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
 
 ## Comandos
@@ -22,6 +23,9 @@ pnpm nx run nest-tools-app-e2e:e2e                                  # levanta la
 pnpm nx run-many -t lint test build
 pnpm nx affected -t build,test,lint
 pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold CRUD
+pnpm run release:dry-run                                            # ensayo: versión y changelog de la release, sin escribir nada
+pnpm run release                                                    # release: commit y tag locales, sin push
+pnpm run release:publish                                            # publica en npm la release del commit actual (2FA)
 ```
 
 ## Convenciones
@@ -36,7 +40,7 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 - Todo tipado: parámetros y retorno de todas las funciones (también los callbacks), campos de clase, constantes y variables, aunque TypeScript pudiera deducirlo, también con literales (`const path: string = '/api'`); `unknown` en lugar de `any`.
 - Interfaces en archivos aparte, una por archivo, en una carpeta `interfaces/` junto al código que las usa (`<nombre>.interface.ts`), como hace NestJS.
 - Miembros de clase con modificador explícito (`public`, `protected` o `private`) y `readonly` si no se reasignan; el constructor, sin `public`. Fuera de una clase los modificadores no existen: la visibilidad la da `export`, y la API pública de la lib es solo lo que exporta `libs/nest-tools/src/index.ts`.
-- En `libs/nest-tools`, `apps/nest-tools-app` y `apps/nest-tools-app-e2e`, ESLint exige `func-style` (declaración), `@typescript-eslint/explicit-function-return-type` y `@typescript-eslint/explicit-member-accessibility`, y desactiva `@typescript-eslint/no-inferrable-types` para poder anotar también los literales (decisión del usuario); el tipo de las variables se revisa en el diff.
+- En `libs/nest-tools`, `apps/nest-tools-app`, `apps/nest-tools-app-e2e` y `tools/release`, ESLint exige `func-style` (declaración), `@typescript-eslint/explicit-function-return-type` y `@typescript-eslint/explicit-member-accessibility`, y desactiva `@typescript-eslint/no-inferrable-types` para poder anotar también los literales (decisión del usuario); el tipo de las variables se revisa en el diff.
 
 ## Reglas de dominio / trampas conocidas
 
@@ -57,9 +61,9 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 
 ## Límites
 
-- ✅ Siempre: leer archivos, buscar en el código, ejecutar `lint`, `test`, `build` y `typecheck` a través de `pnpm nx`; actualizar `MEMORY.md` al terminar cada tarea.
+- ✅ Siempre: leer archivos, buscar en el código, ejecutar `lint`, `test`, `build` y `typecheck` a través de `pnpm nx`; el ensayo de la release (`pnpm run release:dry-run`); actualizar `MEMORY.md` al terminar cada tarea.
 - ⚠ Pregunta antes: editar, crear, mover o borrar archivos; añadir dependencias o ejecutar `pnpm install`; tocar `nx.json`, `tsconfig*`, `package.json`, `pnpm-workspace.yaml`, `eslint.config.mjs`; cambiar los tipos de `packages/types`; ejecutar generadores de Nx o cualquier comando de git.
-- 🚫 Nunca: hacer commit, push o `nx release` sin que se pida; editar `pnpm-lock.yaml` a mano; desactivar reglas de ESLint o relajar el `tsconfig` para que algo pase; tocar `dist/`, `.nx/` o `node_modules/`.
+- 🚫 Nunca: hacer commit, push, `nx release` o la release (`pnpm run release`) sin que se pida; lanzar el push de la release (rama y tag) o la publicación en npm, que los lanza siempre el mantenedor, nunca un agente; editar `pnpm-lock.yaml` a mano; desactivar reglas de ESLint o relajar el `tsconfig` para que algo pase; tocar `dist/`, `.nx/` o `node_modules/`.
 
 ## Verificación
 
@@ -76,7 +80,7 @@ pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold C
 
 ## Comandos
 
-- Tests: `pnpm nx run-many -t test -p nest-tools,nest-tools-app`
+- Tests: `pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools`
 
 ## Reglas
 

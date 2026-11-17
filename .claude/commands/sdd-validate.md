@@ -3,7 +3,7 @@ description: SDD · Valida la spec FR por FR (tests, build y e2e)
 agent: accept edits
 ---
 
-Recorre specs/$0/spec.md requisito a requisito. Para cada FR indica qué test lo cubre y el resultado de ejecutarlo con pnpm nx run-many -t test -p nest-tools,nest-tools-app.
+Recorre specs/$0/spec.md requisito a requisito. Para cada FR indica qué test lo cubre y el resultado de ejecutarlo con pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools.
 
 Los FR que los tests unitarios no pueden verificar compruébalos con `pnpm nx run nest-tools-app-e2e:e2e` (la herramienta usada en `nest-tools-app`) o con `pnpm nx run nest-tools:build` (lo que solo muestra el paquete compilado, como los tipos exportados o el `package.json`).
 

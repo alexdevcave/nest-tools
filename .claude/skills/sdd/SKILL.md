@@ -67,6 +67,6 @@ Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, pr
 
 ## Implementación
 
-Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run-many -t test -p nest-tools,nest-tools-app` en verde, marca la tarea y para.
+Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools` en verde, marca la tarea y para.
 
 Una spec de una herramienta no pasa a `implemented` sin su demostración en `apps/nest-tools-app`, comprobada con e2e y a mano (principio 4).

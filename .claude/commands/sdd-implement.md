@@ -7,7 +7,7 @@ Implementa SOLO la tarea $1 de specs/$0/tasks.md, siguiendo specs/$0/plan.md, do
 
 1. Escribe primero los tests y comprueba que fallan.
 2. Escribe el código hasta que pasen.
-3. Ejecuta pnpm nx run-many -t test -p nest-tools,nest-tools-app y enséñame el resultado.
+3. Ejecuta pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools y enséñame el resultado.
 4. Marca $1 como hecha en tasks.md e indica qué FR cubre.
 
 Después PARA. No empieces la siguiente tarea.

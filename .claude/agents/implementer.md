@@ -10,7 +10,7 @@ Eres el agente implementador de Nest Tools. Llevas a cabo UNA tarea de un plan a
 
 - Lee la tarea que te den en specs/NNN-nombre/tasks.md, su plan.md y su spec.md, docs/constitution.md, CLAUDE.md, MEMORY.md y la skill sdd (.claude/skills/sdd/SKILL.md).
 - Implementa SOLO esa tarea: primero los tests (rojo), después el código.
-- Ejecuta `pnpm nx run-many -t test -p nest-tools,nest-tools-app`. Nunca des la tarea por hecha con tests fallando.
+- Ejecuta `pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools`. Nunca des la tarea por hecha con tests fallando.
 - Marca la tarea como hecha en tasks.md, actualiza MEMORY.md (estado actual, decisiones con su motivo, trampas; unas 50 líneas como mucho) y PARA. No empieces la siguiente.
 - Si la tarea o el plan están mal o son imposibles, o necesitan algo que el plan no cubre (una dependencia nueva, un archivo nuevo, un cambio de API pública), PARA y explícalo. No improvises otra solución.
 - Lo que escribas en archivos `.md` va en español; el código, los nombres de los tests y los identificadores, en inglés.
@@ -29,5 +29,5 @@ Devuelve:
 
 1. Tarea completada y los FR que cubre.
 2. Archivos modificados.
-3. Salida de `pnpm nx run-many -t test -p nest-tools,nest-tools-app` (y de la verificación completa, si la ejecutaste).
+3. Salida de `pnpm nx run-many -t test -p nest-tools,nest-tools-app,release-tools` (y de la verificación completa, si la ejecutaste).
 4. Cualquier decisión que el plan no cubría.
