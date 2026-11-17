@@ -2,7 +2,11 @@
   "name": "@nestjs-template/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "release:dry-run": "nx run release-tools:build --outputStyle=static && node dist/tools/release/src/main.js release --dry-run",
+    "release": "nx run release-tools:build --outputStyle=static && node dist/tools/release/src/main.js release",
+    "release:publish": "nx run release-tools:build --outputStyle=static && node dist/tools/release/src/main.js publish"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^11.0.0",

@@ -1,0 +1,19 @@
+{
+  "name": "release-tools",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/release/src",
+  "projectType": "application",
+  "tags": ["scope:tooling", "type:tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/release",
+        "tsConfig": "tools/release/tsconfig.lib.json",
+        "main": "tools/release/src/main.ts",
+        "generatePackageJson": false
+      }
+    }
+  }
+}
