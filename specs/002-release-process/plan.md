@@ -310,7 +310,7 @@ Lo que no se puede confirmar leyendo el código, con el comando que lo comprueba
 
 - **K1. `--skip-nx-cache` compila de verdad con `nxCloudId` y el 401.** `pnpm nx run nest-tools:build --skip-nx-cache --outputStyle=static`: sin `[local cache]`, `[remote cache]` ni «existing outputs match the cache».
 - **K2. Nx 24 acepta `--outputStyle=static` sin TUI.** `pnpm nx run-many -t lint -p nest-tools --outputStyle=static`: el log queda en la terminal.
-- **K3. La 2FA de npm con la terminal heredada (código o navegador).** Solo se prueba en V9. Antes: `node --version && npm --version && git --version`, `npm whoami` (lo lanza el mantenedor) y la parte de V8 con `npm publish --dry-run`.
+- **K3. La 2FA de npm con la terminal heredada (código o navegador).** Solo se prueba en V9. Antes: `node --version && npm --version && git --version`, `npm whoami` (lo lanza el mantenedor) y la parte de V8 con `npm publish --dry-run`. Resultado (2026-11-18): desde un terminal interactivo la 2FA funciona (confirmación en el navegador); lanzado con `!` desde Claude Code no hay terminal interactivo y npm sale con `EOTP` sin publicar nada, así que `release:publish` se lanza siempre desde un terminal de verdad. Tras el `PUT 202`, un paquete nuevo puede tardar unos minutos en verse en el registro.
 - **K4. Hooks de git antes de V5.** `ls .git/hooks | grep -v '\.sample$'`: si ya hay un `pre-commit`, se guarda una copia y se restaura después.
 - **K5. `@nx/js:tsc` sin manifiesto (`generatePackageJson: false`) y con `rootDir` en la raíz del proyecto.** Se comprueba en V1: `ls dist/tools/release/src/main.js`.
 - **K6. El formato del manifiesto se conserva.** Se comprueba en V7 con `git show HEAD -- libs/nest-tools/package.json`.

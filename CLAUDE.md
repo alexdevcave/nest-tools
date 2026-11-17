@@ -7,7 +7,7 @@ API REST de ejemplo con NestJS dentro de un monorepo Nx, pensada como base para 
 - Nx 24, pnpm 12, NestJS 11, TypeScript 6.0, Jest 30, ESLint 9 (flat config), Prettier 3.
 - `apps/nest-tools-app`: la app NestJS. La compila **webpack** mediante `@nx/webpack` (`webpack.config.js`, compilador `tsc`); los targets `build` y `serve` los infiere el plugin de `nx.json`. La salida es `dist/apps/nest-tools-app/main.js`. Las rutas cuelgan de la raíz (sin prefijo global), en el puerto `PORT` (por defecto 3000). Registra `AllExceptionsFilter` de la lib con `APP_FILTER` en `app.module.ts`.
 - `apps/nest-tools-app-e2e`: tests e2e con Jest + axios contra un servidor en marcha. El target `e2e` depende de `nest-tools-app:build` y `nest-tools-app:serve`, y `global-setup` espera a que el puerto esté abierto.
-- `libs/nest-tools` (`@brickstodev/nest-tools`): librería NestJS que se publicará en npm, compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
+- `libs/nest-tools` (`@brickstodev/nest-tools`): librería NestJS publicada en npm (0.1.0 desde el 2026-11-18; las versiones nuevas salen con la herramienta de `tools/release`), compilada con `@nx/js:tsc`. Su API pública es solo `src/index.ts`, que exporta `AllExceptionsFilter` y el tipo `AllExceptionsFilterOptions`; el manifiesto (`exports`, `files`, metadatos) y el `README.md`/`LICENSE` que se publican viven en la carpeta de la lib.
 - `packages/types` (`@nestjs-template/types`): DTOs e interfaces compartidos, compilados con `@nx/js:tsc`. Ahora mismo no lo importa ningún proyecto.
 - `tools/release` (`release-tools`, `scope:tooling`): la herramienta de release de la lib (spec 002), en TypeScript y sin dependencias, compilada con `@nx/js:tsc` a `dist/tools/release`; no forma parte del paquete. La lanzan los scripts `release:*` del `package.json` raíz.
 - `.agents/skills/`: skills de Nx para otros agentes. Claude recibe las mismas skills por el plugin `nx@nx-claude-plugins` (`.claude/settings.json`).
@@ -25,7 +25,7 @@ pnpm nx affected -t build,test,lint
 pnpm nx g @nx/nest:resource --project=nest-tools-app --name=users   # scaffold CRUD
 pnpm run release:dry-run                                            # ensayo: versión y changelog de la release, sin escribir nada
 pnpm run release                                                    # release: commit y tag locales, sin push
-pnpm run release:publish                                            # publica en npm la release del commit actual (2FA)
+pnpm run release:publish                                            # publica en npm la release del commit actual (2FA; desde un terminal interactivo, no con `!`)
 ```
 
 ## Convenciones

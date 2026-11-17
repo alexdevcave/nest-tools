@@ -1,6 +1,6 @@
 # Spec 002 — Proceso de release
 
-Status: approved
+Status: implemented
 
 ## Contexto y objetivo
 
