@@ -43,3 +43,6 @@ Thumbs.db
 
 .claude/worktrees
 .claude/settings.local.json
+
+# Local project memory
+MEMORY.md
