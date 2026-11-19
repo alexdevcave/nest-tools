@@ -99,15 +99,15 @@ class FakeReleaseDeps implements ReleaseDeps {
   public head: string = PREVIOUS_HEAD;
   public readonly tags: Set<string> = new Set<string>();
   public readonly files: Map<string, string>;
-  private readonly responses: Record<string, string | Error>;
+  private readonly _responses: Record<string, string | Error>;
 
   constructor(overrides: Record<string, string | Error> = {}, files: Record<string, string> = RELEASED_FILES) {
-    this.responses = { ...PASSING_REPOSITORY, ...overrides };
+    this._responses = { ...PASSING_REPOSITORY, ...overrides };
     this.files = new Map<string, string>(Object.entries(files));
   }
 
   public git(args: string[]): string {
-    const output: string = this.answer(`git ${args.join(' ')}`);
+    const output: string = this._answer(`git ${args.join(' ')}`);
     const [command, option, target]: string[] = args;
 
     this.gitArgs.push(args);
@@ -130,7 +130,7 @@ class FakeReleaseDeps implements ReleaseDeps {
   }
 
   public run(command: string, args: string[]): void {
-    this.answer(`${command} ${args.join(' ')}`);
+    this._answer(`${command} ${args.join(' ')}`);
   }
 
   public readFile(path: string): string | null {
@@ -140,12 +140,12 @@ class FakeReleaseDeps implements ReleaseDeps {
   }
 
   public writeFile(path: string, content: string): void {
-    this.answer(`writeFile ${path}`);
+    this._answer(`writeFile ${path}`);
     this.files.set(path, content);
   }
 
   public removeFile(path: string): void {
-    this.answer(`removeFile ${path}`);
+    this._answer(`removeFile ${path}`);
     this.files.delete(path);
   }
 
@@ -157,8 +157,8 @@ class FakeReleaseDeps implements ReleaseDeps {
     this.logs.push(message);
   }
 
-  private answer(command: string): string {
-    const response: string | Error = this.responses[command] ?? '';
+  private _answer(command: string): string {
+    const response: string | Error = this._responses[command] ?? '';
 
     this.calls.push(command);
 

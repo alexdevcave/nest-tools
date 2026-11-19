@@ -1,16 +1,14 @@
-import { Catch, Logger, Optional } from '@nestjs/common';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+import { Catch, Logger, Optional } from '@nestjs/common';
 import type { AbstractHttpAdapter } from '@nestjs/core';
+import { HttpAdapterHost } from '@nestjs/core';
 import { resolveAllExceptionsFilterOptions } from './all-exceptions-filter.options';
 import { buildExceptionBody, classifyException, stripQueryString } from './exception-body';
 import { buildExceptionLogEntry } from './exception-log';
 import type { AllExceptionsFilterOptions } from './interfaces/all-exceptions-filter-options.interface';
 import type { ClassifiedException } from './interfaces/classified-exception.interface';
 import type { ExceptionLogEntry } from './interfaces/exception-log-entry.interface';
-
-// Fixed text, not `AllExceptionsFilter.name`: the context is public API and a minifier could rename the class.
-const LOGGER_CONTEXT: string = 'AllExceptionsFilter';
+import { LOGGER_CONTEXT } from './const/all-exceptions-filter';
 
 /**
  * Catches every error of an HTTP request and replies with `{ statusCode, message, error, path, timestamp }`,
@@ -30,19 +28,36 @@ const LOGGER_CONTEXT: string = 'AllExceptionsFilter';
  */
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter<unknown> {
-  private readonly logger: Logger = new Logger(LOGGER_CONTEXT);
-  private readonly logClientErrors: boolean;
+  private readonly _logger: Logger = new Logger(LOGGER_CONTEXT);
+  private readonly _logClientErrors: boolean;
 
   /**
-   * @param httpAdapterHost The HTTP adapter host of the application (`app.get(HttpAdapterHost)`); Nest injects it when it creates the filter.
+   * @param _httpAdapterHost The HTTP adapter host of the application (`app.get(HttpAdapterHost)`); Nest injects it when it creates the filter.
    * @param options The filter options; when Nest creates the filter it receives `undefined`, and the defaults apply.
    * @throws TypeError when the options are not an object or `logClientErrors` is not a boolean.
    */
   constructor(
-    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly _httpAdapterHost: HttpAdapterHost,
     @Optional() options?: AllExceptionsFilterOptions,
   ) {
-    this.logClientErrors = resolveAllExceptionsFilterOptions(options).logClientErrors;
+    this._logClientErrors = resolveAllExceptionsFilterOptions(options).logClientErrors;
+  }
+
+  /** Builds and writes the log entry; called after replying, so a failure here cannot leave the client without its response. */
+  private _log(exception: unknown, classified: ClassifiedException, method: string, url: string, responseSent: boolean): void {
+    const entry: ExceptionLogEntry | null = buildExceptionLogEntry(exception, classified, method, url, responseSent, this._logClientErrors);
+
+    if (entry === null) {
+      return;
+    }
+
+    if (entry.level === 'warn') {
+      this._logger.warn(entry.line);
+    } else if (entry.trace === undefined) {
+      this._logger.error(entry.line);
+    } else {
+      this._logger.error(entry.line, entry.trace);
+    }
   }
 
   /**
@@ -56,7 +71,7 @@ export class AllExceptionsFilter implements ExceptionFilter<unknown> {
     }
 
     // Read on each call, as the Nest docs recommend: the adapter may not be ready when the filter is created.
-    const httpAdapter: AbstractHttpAdapter = this.httpAdapterHost.httpAdapter;
+    const httpAdapter: AbstractHttpAdapter = this._httpAdapterHost.httpAdapter;
     const request: unknown = host.switchToHttp().getRequest();
     const response: unknown = host.switchToHttp().getResponse();
     const url: string = httpAdapter.getRequestUrl(request);
@@ -69,25 +84,8 @@ export class AllExceptionsFilter implements ExceptionFilter<unknown> {
       httpAdapter.reply(response, buildExceptionBody(classified, stripQueryString(url), new Date()), classified.statusCode);
     }
 
-    this.log(exception, classified, httpAdapter.getRequestMethod(request), url, responseSent);
+    this._log(exception, classified, httpAdapter.getRequestMethod(request), url, responseSent);
 
     return undefined;
-  }
-
-  /** Builds and writes the log entry; called after replying, so a failure here cannot leave the client without its response. */
-  private log(exception: unknown, classified: ClassifiedException, method: string, url: string, responseSent: boolean): void {
-    const entry: ExceptionLogEntry | null = buildExceptionLogEntry(exception, classified, method, url, responseSent, this.logClientErrors);
-
-    if (entry === null) {
-      return;
-    }
-
-    if (entry.level === 'warn') {
-      this.logger.warn(entry.line);
-    } else if (entry.trace === undefined) {
-      this.logger.error(entry.line);
-    } else {
-      this.logger.error(entry.line, entry.trace);
-    }
   }
 }

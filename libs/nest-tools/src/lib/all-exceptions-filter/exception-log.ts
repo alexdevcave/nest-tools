@@ -2,11 +2,7 @@ import { stripQueryString } from './exception-body';
 import type { ClassifiedException } from './interfaces/classified-exception.interface';
 import type { ExceptionLogEntry } from './interfaces/exception-log-entry.interface';
 import { getValueType } from './value-type';
-
-const RESPONSE_SENT_SUFFIX: string = ' (response already sent)';
-
-/** Line breaks of a message: replaced with a space so a message cannot fake extra log lines (log injection). */
-const LINE_BREAKS: RegExp = /\r\n|\n|\r/g;
+import { LINE_BREAKS, RESPONSE_SENT_SUFFIX } from './const/all-exceptions-filter';
 
 /** The message of an `Error`, a thrown string itself or, for any other value, only its type: never its content. */
 function getOriginalMessage(value: unknown): string {

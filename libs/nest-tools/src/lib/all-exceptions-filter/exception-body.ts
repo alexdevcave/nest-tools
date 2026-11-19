@@ -2,12 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { STATUS_CODES } from 'node:http';
 import type { ClassifiedException } from './interfaces/classified-exception.interface';
 import type { ExceptionResponseBody } from './interfaces/exception-response-body.interface';
-
-/** Fields of the response body that only the filter sets: a custom body never overrides them. */
-const RESERVED_FIELDS: ReadonlySet<string> = new Set<string>(['statusCode', 'message', 'error', 'path', 'timestamp']);
-
-/** Fields of a custom body that are never copied: a response never shows a stack or a cause (FR-4). */
-const HIDDEN_FIELDS: ReadonlySet<string> = new Set<string>(['stack', 'cause']);
+import { HIDDEN_FIELDS, RESERVED_FIELDS } from './const/all-exceptions-filter';
 
 function isErrorStatus(value: unknown): value is number {
   return typeof value === 'number' && Number.isInteger(value) && value >= 400 && value <= 599;

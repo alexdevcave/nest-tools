@@ -5,21 +5,21 @@ import { ErrorsService } from './errors.service';
 // Demo of AllExceptionsFilter: business errors come from ErrorsService; the routes that depend on HTTP (pipe, raw response, body) stay here.
 @Controller('errors')
 export class ErrorsController {
-  constructor(private readonly errorsService: ErrorsService) {}
+  constructor(private readonly _errorsService: ErrorsService) {}
 
   @Get('user-not-found')
   public notFound(): never {
-    return this.errorsService.findUser();
+    return this._errorsService.findUser();
   }
 
   @Get('user-with-code')
   public withCode(): never {
-    return this.errorsService.findUserWithCode();
+    return this._errorsService.findUserWithCode();
   }
 
   @Get('no-message')
   public noMessage(): never {
-    return this.errorsService.lockOrder();
+    return this._errorsService.lockOrder();
   }
 
   @Get('items/:id')
@@ -29,32 +29,32 @@ export class ErrorsController {
 
   @Get('validate-user')
   public validation(): never {
-    return this.errorsService.validateUser();
+    return this._errorsService.validateUser();
   }
 
   @Get('custom-error')
   public customError(): never {
-    return this.errorsService.applyCoupon();
+    return this._errorsService.applyCoupon();
   }
 
   @Get('unavailable')
   public unavailable(): never {
-    return this.errorsService.checkAvailability();
+    return this._errorsService.checkAvailability();
   }
 
   @Get('unexpected')
   public unexpected(): never {
-    return this.errorsService.connectToDatabase();
+    return this._errorsService.connectToDatabase();
   }
 
   @Get('with-cause')
   public withCause(): never {
-    return this.errorsService.loadOrders();
+    return this._errorsService.loadOrders();
   }
 
   @Get('thrown-string')
   public thrownString(): never {
-    return this.errorsService.failWithText();
+    return this._errorsService.failWithText();
   }
 
   @Get('partial-response')

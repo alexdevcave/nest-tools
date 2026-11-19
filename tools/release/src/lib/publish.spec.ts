@@ -48,21 +48,21 @@ class FakePublishDeps implements ReleaseDeps {
   // Each `run` call with its working directory (`undefined` is the repository root).
   public readonly runs: [string, string | undefined][] = [];
   public readonly logs: string[] = [];
-  private readonly responses: Record<string, string | Error>;
+  private readonly _responses: Record<string, string | Error>;
 
   constructor(overrides: Record<string, string | Error> = {}) {
-    this.responses = { ...PUBLISHABLE_REPOSITORY, ...overrides };
+    this._responses = { ...PUBLISHABLE_REPOSITORY, ...overrides };
   }
 
   public git(args: string[]): string {
-    return this.answer(`git ${args.join(' ')}`);
+    return this._answer(`git ${args.join(' ')}`);
   }
 
   public run(command: string, args: string[], cwd?: string): void {
     const call: string = `${command} ${args.join(' ')}`;
 
     this.runs.push([call, cwd]);
-    this.answer(call);
+    this._answer(call);
   }
 
   public readFile(path: string): string | null {
@@ -87,8 +87,8 @@ class FakePublishDeps implements ReleaseDeps {
     this.logs.push(message);
   }
 
-  private answer(command: string): string {
-    const response: string | Error = this.responses[command] ?? '';
+  private _answer(command: string): string {
+    const response: string | Error = this._responses[command] ?? '';
 
     this.calls.push(command);
 
